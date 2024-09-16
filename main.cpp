@@ -16,6 +16,8 @@ public:
 
    // add more functions
    friend fraction operator* (fraction, int);
+   fraction operator- (fraction);
+   fraction operator/ (fraction);
 };
 
 /*
@@ -33,11 +35,8 @@ ostream& operator<< (ostream& co, fraction f)
       co << f.numerator / f.denominator << " ";
       f.numerator %= f.denominator;
    }
-   if (f.numerator > 0)
-      co << f.numerator << "/" << f.denominator;
-   else
-      co << 0;
 
+   co << f.numerator << "/" << f.denominator;
    return co;
 }
 
@@ -111,6 +110,27 @@ fraction operator* (fraction left, int right)
    return right*left;
 }
 
+fraction fraction :: operator- (fraction right) {
+   fraction diff;  // diff of two fractions
+
+   // make common denominator
+   diff.denominator = this->denominator * right.denominator;
+
+   // find new numerators and add together
+   diff.numerator = this->numerator * right.denominator  -
+                   right.numerator * this->denominator;
+
+   return diff;
+}
+
+fraction fraction::operator / (fraction right) {
+   fraction div;
+
+   div.numerator = numerator * right.denominator;
+   div.denominator = denominator * right.numerator;
+   return div;
+}
+
 int main() {
    fraction fract1, fract2;   // two fraction objects
 
@@ -128,6 +148,13 @@ int main() {
    cout << "fraction x fraction: " << fract1 << " x " << fract2 << " = " << fract1 * fract2 << endl;
    cout << "int x fraction : 5 x " << fract1 << " = " << 5 * fract1 << endl;
    cout << "fraction x int : " << fract1 << " x 5 = " << fract1 * 5 << endl;
+
+   // tests for subtraction
+   cout << "\nsubtractionn: " << fract1 << " - " << fract2 << " = " << fract1 - fract2 << endl;
+   cout << "subtractionn: " << fract2 << " - " << fract1 << " = " << fract2 - fract1 << endl;
+
+   // test for division
+   cout << "\ndivision: " << fract1 << " / " << fract2 << " = " << fract1 / fract2 << endl;
 
    return 0;
 }
